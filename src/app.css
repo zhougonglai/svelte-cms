@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+:root{
+  --bohe-primary: #00FEF1;
+  --bohe-second: #00C287;
+}
