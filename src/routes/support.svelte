@@ -1,16 +1,12 @@
 <script>
-	import { onMount } from 'svelte';
-
-	let games = [];
-
-	onMount(async () => {
-		games = await fetch(
+	async function getGames() {
+		return await fetch(
 			`https://jiasu.bohe.com/config/game.json?${new URLSearchParams({
 				lang: 'zh_CN',
 				region_code: 1
 			})}`
 		).then(res => res.json());
-	});
+	}
 </script>
 
 <svelte:head>
@@ -30,8 +26,12 @@
 	</div>
 
 	<div class="support-body">
-		{#each games as game}
-			<div>{game.title}</div>
-		{/each}
+		{#await getGames()}
+			加载中...
+		{:then games}
+			{#each games.slice(0, 40) as game}
+				{game.title}
+			{/each}
+		{/await}
 	</div>
 </section>
