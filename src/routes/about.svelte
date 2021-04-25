@@ -2,27 +2,34 @@
 	export async function load({ page: { query } }) {
 		return {
 			props: {
-				query
+				tab: query.has('tab') ? query.get('tab') : 'default'
 			}
 		};
 	}
 </script>
 
 <script>
-	export let query = { tab: 'default' };
+	export let tab = 'default';
 
 	const tabs = {
 		menus: {
-			default: 'BOHE加速器'
+			default: 'BOHE加速器',
+			company: '公司介绍',
+			contact: '联系我们',
+			join: '加入我们'
 		}
 	};
 </script>
+
+<svelte:head>
+	<title>{tabs.menus[tab]}</title>
+</svelte:head>
 
 <section>
 	<div class="tabs">
 		<div class="tab-bars">
 			<div class="tab-bar">
-				{tabs.menus[query.tab]}
+				{tabs.menus[tab]}
 			</div>
 		</div>
 	</div>

@@ -15,9 +15,7 @@
 {/if}
 
 <main>
-	{#key section}
-		<slot />
-	{/key}
+	<slot />
 </main>
 
 <Footer />

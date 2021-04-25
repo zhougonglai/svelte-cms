@@ -1,7 +1,7 @@
 <script>
 	async function getNews() {
 		const { data } = await fetch(
-			`https://webapi.bohejiasuqi.com/api/news?${new URLSearchParams({
+			`https://webapi.bohejiasuqi.com/tools/news?${new URLSearchParams({
 				class_type: 0
 			})}`
 		).then(res => res.json());
