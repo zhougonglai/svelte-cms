@@ -1,4 +1,48 @@
 <script>
+	import BouncingLoader from '$lib/ui/BouncingLoader.svelte';
+	const allType = [
+		{
+			key: 'all',
+			label: '全部'
+		}
+	];
+	const hotAndFree = [
+		{
+			key: 'is_hot',
+			label: '热门'
+		},
+		{
+			key: 'is_free',
+			label: '限免'
+		}
+	];
+
+	const otherType = [
+		{
+			key: 'steam',
+			label: 'steam'
+		},
+		{
+			key: 'origin',
+			label: 'origin'
+		},
+		{
+			key: 'uplay',
+			label: 'uplay'
+		},
+		{
+			key: 'xbox',
+			label: 'xbox'
+		},
+		{
+			key: 'ps4s',
+			label: 'ps4s'
+		},
+		{
+			key: 'witch',
+			label: 'witch'
+		}
+	];
 	async function getGames() {
 		return await fetch(
 			`https://jiasu.bohe.com/config/game.json?${new URLSearchParams({
@@ -18,20 +62,48 @@
 	/>
 </svelte:head>
 
-<section class="support">
-	<div class="support-header">
-		<ul class="support-tags">
-			<li class="support-tag">全部</li>
+<section class="support mx-auto my-10">
+	<div class="support-header flex justify-between">
+		<ul class="support-tags flex gap-x-4">
+			{#each allType.concat(hotAndFree, otherType) as type}
+				<li class="support-tag cursor-pointer">{type.label}</li>
+			{/each}
 		</ul>
+
+		<div class="support-search">
+			<input
+				class="search outline-none px-5 transition shadow hover:shadow-lg"
+				type="search"
+			/>
+		</div>
 	</div>
 
-	<div class="support-body">
+	<ul class="support-body grid grid-cols-5 gap-5 mt-5">
 		{#await getGames()}
-			加载中...
+			<BouncingLoader />
 		{:then games}
 			{#each games.slice(0, 40) as game}
-				{game.title}
+				<li class="game">{game.title}</li>
 			{/each}
 		{/await}
-	</div>
+	</ul>
 </section>
+
+<style lang="scss">
+	.support {
+		width: 1200px;
+		min-height: 600px;
+
+		&-header {
+			line-height: 40px;
+			height: 40px;
+		}
+
+		&-search {
+			.search {
+				width: 360px;
+				border-radius: 20px;
+			}
+		}
+	}
+</style>
