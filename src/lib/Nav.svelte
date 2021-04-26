@@ -7,7 +7,7 @@
 		<img alt="logo" src="/img/logo.png" class="logo self-center" />
 
 		<ul class="flex justify-between">
-			<li class="flex-1 text-center">
+			<li class="text-center">
 				<a
 					sveltekit:prefetch
 					href="/"
@@ -17,7 +17,7 @@
 					首页
 				</a>
 			</li>
-			<li class="flex-1 text-center">
+			<li class="text-center">
 				<a
 					sveltekit:prefetch
 					href="/support"
@@ -27,7 +27,7 @@
 					游戏支持
 				</a>
 			</li>
-			<li class="flex-1 text-center">
+			<li class="text-center">
 				<a
 					sveltekit:prefetch
 					href="/activitys/"
@@ -37,7 +37,7 @@
 					热门活动
 				</a>
 			</li>
-			<li class="flex-1 text-center">
+			<li class="text-center">
 				<a
 					sveltekit:prefetch
 					href="/notice/"
@@ -47,7 +47,7 @@
 					官方公告
 				</a>
 			</li>
-			<li class="flex-1 text-center">
+			<li class="text-center">
 				<a
 					sveltekit:prefetch
 					href="/about"
@@ -59,7 +59,7 @@
 			</li>
 		</ul>
 
-		<div class="inline-flex flex-1 justify-end">
+		<div class="inline-flexjustify-end">
 			<button>登录</button>
 		</div>
 	</nav>
@@ -84,6 +84,7 @@
 
 			a {
 				position: relative;
+				width: 100px;
 				&.selected {
 					opacity: 1;
 					&:before {

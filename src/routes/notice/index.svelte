@@ -2,7 +2,7 @@
 	async function getNews() {
 		const { data } = await fetch(
 			`https://webapi.bohejiasuqi.com/tools/news?${new URLSearchParams({
-				class_type: 0
+				class_type: 2
 			})}`
 		).then(res => res.json());
 
