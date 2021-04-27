@@ -43,6 +43,9 @@
 			label: 'witch'
 		}
 	];
+
+	let active = 'all';
+
 	async function getGames() {
 		return await fetch(
 			`https://jiasu.bohe.com/config/game.json?${new URLSearchParams({
@@ -66,7 +69,12 @@
 	<div class="support-header flex justify-between">
 		<ul class="support-tags flex gap-x-4">
 			{#each allType.concat(hotAndFree, otherType) as type}
-				<li class="support-tag cursor-pointer">{type.label}</li>
+				<li
+					class="support-tag cursor-pointer"
+					class:active={type.key === active}
+				>
+					{type.label}
+				</li>
 			{/each}
 		</ul>
 

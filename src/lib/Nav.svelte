@@ -59,7 +59,7 @@
 			</li>
 		</ul>
 
-		<div class="inline-flexjustify-end">
+		<div class="inline-flex flex-1 justify-end">
 			<button>登录</button>
 		</div>
 	</nav>
