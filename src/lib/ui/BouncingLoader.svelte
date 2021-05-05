@@ -1,4 +1,4 @@
-<div class="bouncing-loader">
+<div class="bouncing">
 	<div />
 	<div />
 	<div />
@@ -12,7 +12,7 @@
 		}
 	}
 
-	.bouncing-loader {
+	.bouncing {
 		display: flex;
 		justify-content: center;
 		> div {

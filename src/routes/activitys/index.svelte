@@ -1,7 +1,10 @@
 <script>
+	import BouncingLoader from '$lib/ui/BouncingLoader.svelte';
+	import Activity from './_active.svelte';
+
 	async function getActivitys() {
 		const { data } = await fetch(
-			'https://webapi.bohejiasuqi.com/api/activity'
+			`${import.meta.env.VITE_SVELTEKIT_API_PATH}/api/activity`
 		).then(res => res.json());
 
 		return data;
@@ -17,16 +20,22 @@
 	/>
 </svelte:head>
 
-<section>
-	<ul class="activitys flex flex-col">
+<section class="mx-auto py-4">
+	<ul class="activitys grid grid-flow-row-dense gap-y-4">
 		{#await getActivitys()}
-			加载中...
+			<BouncingLoader />
 		{:then { list }}
 			{#each list as activity}
-				<li>
-					{activity.title}
-				</li>
+				<Activity {activity} />
 			{/each}
 		{/await}
 	</ul>
 </section>
+
+<style lang="scss">
+	section {
+		width: 1200px;
+		.activitys {
+		}
+	}
+</style>

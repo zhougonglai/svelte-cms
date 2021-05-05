@@ -6,7 +6,7 @@
 	<nav class="flex">
 		<img alt="logo" src="/img/logo.png" class="logo self-center" />
 
-		<ul class="flex justify-between">
+		<ul class="nav-list flex justify-between">
 			<li class="text-center">
 				<a
 					sveltekit:prefetch
@@ -15,16 +15,6 @@
 					class="block opacity-70 hover:opacity-100"
 				>
 					首页
-				</a>
-			</li>
-			<li class="text-center">
-				<a
-					sveltekit:prefetch
-					href="/support"
-					class:selected={section === 'support'}
-					class="block opacity-70 hover:opacity-100"
-				>
-					游戏支持
 				</a>
 			</li>
 			<li class="text-center">
@@ -50,6 +40,26 @@
 			<li class="text-center">
 				<a
 					sveltekit:prefetch
+					href="/support"
+					class:selected={section === 'support'}
+					class="block opacity-70 hover:opacity-100"
+				>
+					游戏支持
+				</a>
+			</li>
+			<li class="text-center">
+				<a
+					sveltekit:prefetch
+					href="/news/"
+					class:selected={section === 'news'}
+					class="block opacity-70 hover:opacity-100"
+				>
+					资讯
+				</a>
+			</li>
+			<li class="text-center">
+				<a
+					sveltekit:prefetch
 					href="/about"
 					class:selected={section === 'about'}
 					class="block opacity-70 hover:opacity-100"
@@ -60,7 +70,7 @@
 		</ul>
 
 		<div class="inline-flex flex-1 justify-end">
-			<button>登录</button>
+			<button class="w-40">登录</button>
 		</div>
 	</nav>
 </header>
@@ -68,6 +78,7 @@
 <style lang="scss">
 	nav {
 		height: 100px;
+		width: 1200px;
 		line-height: 100px;
 
 		.flex {
@@ -79,7 +90,7 @@
 			height: 45px;
 		}
 
-		ul {
+		ul.nav-list {
 			flex-basis: 500px;
 
 			a {

@@ -1,59 +1,100 @@
 <script>
 	import BouncingLoader from '$lib/ui/BouncingLoader.svelte';
-	const allType = [
+	import Pagination from '$lib/ui/Pagination.svelte';
+	import { onMount } from 'svelte';
+
+	let active = 'all';
+	let games = [];
+	let activeGames = [];
+	let loading = true;
+	let search = '';
+
+	const types = [
 		{
 			key: 'all',
-			label: '全部'
-		}
-	];
-	const hotAndFree = [
+			label: '全部',
+			games: () => games
+		},
 		{
 			key: 'is_hot',
-			label: '热门'
+			label: '热门',
+			games: () => games.filter(game => game.is_hot)
 		},
 		{
 			key: 'is_free',
-			label: '限免'
-		}
-	];
-
-	const otherType = [
-		{
-			key: 'steam',
-			label: 'steam'
+			label: '限免',
+			games: () => games.filter(game => game.is_free)
 		},
 		{
-			key: 'origin',
-			label: 'origin'
+			key: 'Steam',
+			label: 'Steam',
+			games: () => games.filter(game => game.game_label?.includes('Steam'))
 		},
 		{
-			key: 'uplay',
-			label: 'uplay'
+			key: 'Origin',
+			label: 'Origin',
+			games: () => games.filter(game => game.game_label?.includes('Origin'))
+		},
+		{
+			key: 'Uplay',
+			label: 'Uplay',
+			games: () => games.filter(game => game.game_label?.includes('Uplay'))
 		},
 		{
 			key: 'xbox',
-			label: 'xbox'
+			label: 'xbox',
+			games: () => games.filter(game => game.game_label?.includes('xbox'))
 		},
 		{
-			key: 'ps4s',
-			label: 'ps4s'
+			key: 'ps4',
+			label: 'ps4',
+			games: () => games.filter(game => game.game_label?.includes('ps4'))
 		},
 		{
-			key: 'witch',
-			label: 'witch'
+			key: 'Switch',
+			label: 'Switch',
+			games: () => games.filter(game => game.game_label?.includes('Switch'))
 		}
 	];
 
-	let active = 'all';
+	const pagination = {
+		total: 0,
+		size: 40,
+		index: 1
+	};
+
+	const switchActive = ({ key }) => {
+		active = key;
+		activeGames = types.find(type => type.key === key).games();
+		pagination.index = 1;
+		pagination.total = Math.ceil(activeGames.length / pagination.size);
+	};
+
+	const onPageChange = index => {
+		pagination.index = index;
+	};
+
+	const onSearch = e => {
+		search = e.target.value;
+		pagination.total = Math.ceil(
+			activeGames.filter(game => game.title.includes(search)).length /
+				pagination.size
+		);
+	};
 
 	async function getGames() {
-		return await fetch(
+		loading = true;
+		activeGames = games = await fetch(
 			`https://jiasu.bohe.com/config/game.json?${new URLSearchParams({
 				lang: 'zh_CN',
 				region_code: 1
 			})}`
 		).then(res => res.json());
+		loading = false;
+		pagination.total = Math.ceil(activeGames.length / pagination.size);
 	}
+
+	onMount(getGames);
 </script>
 
 <svelte:head>
@@ -68,10 +109,11 @@
 <section class="support mx-auto my-10">
 	<div class="support-header flex justify-between">
 		<ul class="support-tags flex gap-x-4">
-			{#each allType.concat(hotAndFree, otherType) as type}
+			{#each types as type}
 				<li
-					class="support-tag cursor-pointer"
+					class="support-tag cursor-pointer text-gray-800 opacity-75 hover:opacity-100"
 					class:active={type.key === active}
+					on:click={() => switchActive(type)}
 				>
 					{type.label}
 				</li>
@@ -82,19 +124,39 @@
 			<input
 				class="search outline-none px-5 transition shadow hover:shadow-lg"
 				type="search"
+				list="games"
+				placeholder="search"
+				value={search}
+				on:input={onSearch}
 			/>
+			<datalist id="games">
+				{#each games as game}
+					<option value={game.title} key={game.key} />
+				{/each}
+			</datalist>
 		</div>
 	</div>
 
-	<ul class="support-body grid grid-cols-5 gap-5 mt-5">
-		{#await getGames()}
-			<BouncingLoader />
-		{:then games}
-			{#each games.slice(0, 40) as game}
-				<li class="game">{game.title}</li>
+	{#if loading}
+		<BouncingLoader />
+	{:else}
+		<ul class="support-body grid grid-cols-5 content-start gap-5 mt-5">
+			{#each activeGames
+				.filter(game => game.title.includes(search))
+				.slice(
+					(pagination.index - 1) * pagination.size,
+					pagination.index * pagination.size
+				) as game}
+				<li
+					class="game select-none leading-10 height-10 truncate rounded px-2 cursor-pointer bg-white hover:shadow"
+				>
+					{game.title}
+				</li>
 			{/each}
-		{/await}
-	</ul>
+		</ul>
+	{/if}
+
+	<Pagination {pagination} {onPageChange} class="justify-end" />
 </section>
 
 <style lang="scss">
@@ -107,10 +169,37 @@
 			height: 40px;
 		}
 
+		&-tag {
+			width: 60px;
+			position: relative;
+			text-align: center;
+			&.active {
+				opacity: 1;
+				&::after {
+					content: '';
+					position: absolute;
+					bottom: -5px;
+					left: 0px;
+					width: 60px;
+					height: 4px;
+					border-radius: 2px;
+					background-color: var(--primary);
+				}
+			}
+		}
 		&-search {
 			.search {
 				width: 360px;
 				border-radius: 20px;
+			}
+		}
+
+		&-body {
+			min-height: 460px;
+			.game {
+				&:hover {
+					background-color: var(--primary);
+				}
 			}
 		}
 	}

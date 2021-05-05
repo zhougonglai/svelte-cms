@@ -3,7 +3,9 @@
 		const {
 			data: { total, current_page, list }
 		} = await fetch(
-			`https://webapi.bohejiasuqi.com/api/news?${new URLSearchParams({
+			`${
+				import.meta.env.VITE_SVELTEKIT_API_PATH
+			}/api/news?${new URLSearchParams({
 				size: 15,
 				class_type: 0,
 				support_type: 1
@@ -30,7 +32,7 @@
 
 <section class="section-1">
 	<img
-		src="/img/block-title.png"
+		src="/img/index/block-title.png"
 		alt="薄荷加速器，免费也可以是精品备份"
 		width="870"
 		height="56"
@@ -74,11 +76,11 @@
 		/>
 	</div>
 
-	<div class="fragments flex mt-10">
+	<div class="fragments flex mt-10 overflow-x-hidden">
 		<div
 			class="fragment flex-1 cursor-pointer relative flex flex-col justify-end p-10"
 		>
-			<img src="/img/game.png" alt="游戏" class="absolute inset-0" />
+			<img src="/img/index/game.png" alt="游戏" class="absolute inset-0" />
 			<h3 class="title text-2xl text-green-500 mb-5">游戏</h3>
 			<p class="desc text-white">
 				PC游戏、平台游戏、主机游戏、手机游戏全部支持
@@ -87,14 +89,14 @@
 		<div
 			class="fragment flex-1 cursor-pointer relative flex flex-col justify-end p-10"
 		>
-			<img src="/img/music.png" alt="音乐" class="absolute inset-0" />
+			<img src="/img/index/music.png" alt="音乐" class="absolute inset-0" />
 			<h3 class="title text-2xl text-green-500 mb-5">音乐</h3>
 			<p class="desc text-white">网易云音乐、QQ音乐、酷狗音乐完美播放</p>
 		</div>
 		<div
 			class="fragment flex-1 cursor-pointer relative flex flex-col justify-end p-10"
 		>
-			<img src="/img/website.png" alt="网页" class="absolute inset-0" />
+			<img src="/img/index/website.png" alt="网页" class="absolute inset-0" />
 			<h3 class="title text-2xl text-green-500 mb-5">网页</h3>
 			<p class="desc text-white">
 				支持海外用户贴吧、论坛、垂直社区回国加速服务
@@ -103,7 +105,7 @@
 		<div
 			class="fragment flex-1 cursor-pointer relative flex flex-col justify-end p-10"
 		>
-			<img src="/img/video.png" alt="视频" class="absolute inset-0" />
+			<img src="/img/index/video.png" alt="视频" class="absolute inset-0" />
 			<h3 class="title text-2xl text-green-500 mb-5">视频</h3>
 			<p class="desc text-white">
 				爱奇艺、优酷、腾讯视频全支持，随时随地嗨看欧洲杯

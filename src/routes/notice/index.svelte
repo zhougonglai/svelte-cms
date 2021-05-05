@@ -1,18 +1,35 @@
 <script>
-	async function getNews() {
+	import BouncingLoader from '$lib/ui/BouncingLoader.svelte';
+	import Pagination from '$lib/ui/Pagination.svelte';
+	import { onMount } from 'svelte';
+	let notices = [];
+	let loading = true;
+
+	async function getNews(page = 1) {
+		loading = true;
 		const { data } = await fetch(
-			`https://webapi.bohejiasuqi.com/api/news?${new URLSearchParams({
-				class_type: 2,
-				support_type: 1
+			`${
+				import.meta.env.VITE_SVELTEKIT_API_PATH
+			}/api/news?${new URLSearchParams({
+				class_type: 0,
+				support_type: 1,
+				page
 			})}`
 		).then(res => res.json());
 
-		return data;
+		loading = false;
+		console.log(data);
+		notices = data;
 	}
+
+	const onPageChange = page => getNews(page);
+
+	onMount(getNews);
+	// { list, total, current_page }
 </script>
 
 <svelte:head>
-	<title>资讯 - 薄荷BOHE加速器</title>
+	<title>公告 - 薄荷BOHE加速器</title>
 	<meta name="keywords" content="薄荷BOHE加速器" />
 	<meta
 		name="description"
@@ -20,16 +37,60 @@
 	/>
 </svelte:head>
 
-<section>
-	<ul class="activitys flex flex-col">
-		{#await getNews()}
-			加载中...
-		{:then { list }}
-			{#each list as news}
-				<li>
-					{news.title}
+<div class="jum">
+	<div class="title mx-auto select-none">官方公告 Official Announcement</div>
+</div>
+<section class="mx-auto py-4">
+	{#if loading}
+		<BouncingLoader />
+	{:else}
+		<ul class="notices flex flex-col">
+			{#each notices?.list as notice}
+				<li class="notice cursor-pointer hover:shadow rounded p-4">
+					<a sveltekit:prefetch href={`/notice/${notice.id}`}>
+						<div class="title text-lg text-gray-800">
+							{notice.title}
+						</div>
+						<div class="summary text-sm text-gray-400 mt-2">
+							{notice.summary}
+						</div>
+					</a>
 				</li>
 			{/each}
-		{/await}
-	</ul>
+		</ul>
+		<Pagination
+			pagination={{
+				total: Math.ceil(notices.total / notices.per_page),
+				index: notices.current_page
+			}}
+			{onPageChange}
+		/>
+	{/if}
 </section>
+
+<style lang="scss">
+	.jum {
+		height: 320px;
+		background-image: url('/img/notice/block.png');
+		background-size: 1920px 322px;
+		background-position: center bottom;
+		color: var(--primary);
+
+		.title {
+			width: 1200px;
+			line-height: 320px;
+			font-size: xxx-large;
+		}
+	}
+	section {
+		width: 1200px;
+
+		ul.notices {
+			li.notice {
+				+ li {
+					margin-top: 10px;
+				}
+			}
+		}
+	}
+</style>
