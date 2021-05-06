@@ -1,6 +1,6 @@
-const node = require('@sveltejs/adapter-node');
+import node from '@sveltejs/adapter-node';
 // const vercel = require('@sveltejs/adapter-vercel');
-const sveltePreprocess = require('svelte-preprocess');
+import sveltePreprocess from 'svelte-preprocess';
 
 /** @type {import('@sveltejs/kit').Config} */
 module.exports = {
