@@ -1,6 +1,6 @@
 <script>
-	import BouncingLoader from '$lib/ui/BouncingLoader.svelte';
-	import Activity from './_active.svelte';
+	import BouncingLoader from '$lib/BouncingLoader.svelte';
+	import Activity from './_Active.svelte';
 
 	async function getActivitys() {
 		const { data } = await fetch(

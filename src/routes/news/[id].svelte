@@ -2,7 +2,11 @@
 	export async function load({ page: { params }, fetch }) {
 		const { data } = await fetch(
 			`${import.meta.env.VITE_SVELTEKIT_API_PATH}/api/news/${params.id}`
-		).then(res => res.json());
+		).then(res => {
+			console.log(res);
+			return res.json();
+		});
+
 		return {
 			props: {
 				title: data.title,

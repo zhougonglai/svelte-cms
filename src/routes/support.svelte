@@ -1,6 +1,6 @@
 <script>
-	import BouncingLoader from '$lib/ui/BouncingLoader.svelte';
-	import Pagination from '$lib/ui/Pagination.svelte';
+	import BouncingLoader from '$lib/BouncingLoader.svelte';
+	import Pagination from '$lib/Pagination.svelte';
 	import { onMount } from 'svelte';
 
 	let active = 'all';

@@ -1,15 +1,23 @@
 <script context="module">
 	export async function load({ page: { params }, fetch }) {
-		const { data } = await fetch(
+		console.log(import.meta.env.VITE_SVELTEKIT_API_PATH);
+		const { data, code, msg } = await fetch(
 			`${import.meta.env.VITE_SVELTEKIT_API_PATH}/api/news/${params.id}`
 		).then(res => res.json());
-		return {
-			props: {
-				title: data.title,
-				content: data.content,
-				publish_time: data.publish_time
-			}
-		};
+
+		if (code) {
+			return {
+				error: new Error(`${msg}`)
+			};
+		} else {
+			return {
+				props: {
+					title: data.title,
+					content: data.content,
+					publish_time: data.publish_time
+				}
+			};
+		}
 	}
 </script>
 

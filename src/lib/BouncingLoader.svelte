@@ -1,3 +1,8 @@
+<script context="module">
+	export const hydrate = false;
+	export const router = false;
+</script>
+
 <div class="bouncing">
 	<div />
 	<div />

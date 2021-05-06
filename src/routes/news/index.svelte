@@ -1,13 +1,18 @@
 <script>
-	import BouncingLoader from '$lib/ui/BouncingLoader.svelte';
+	import BouncingLoader from '$lib/BouncingLoader.svelte';
 
 	async function getNews() {
 		const { data } = await fetch(
-			`https://webapi.bohejiasuqi.com/api/news?${new URLSearchParams({
+			`${
+				import.meta.env.VITE_SVELTEKIT_API_PATH
+			}/api/news?${new URLSearchParams({
 				class_type: 2,
 				support_type: 1
 			})}`
-		).then(res => res.json());
+		).then(res => {
+			console.log(res);
+			return res.json();
+		});
 
 		return data;
 	}
@@ -78,14 +83,8 @@
 						height: 140px;
 					}
 
-					.title {
-					}
-
 					.summary {
 						flex: 1;
-					}
-
-					.status {
 					}
 				}
 			}
