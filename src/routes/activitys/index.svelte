@@ -35,7 +35,5 @@
 <style lang="scss">
 	section {
 		width: 1200px;
-		.activitys {
-		}
 	}
 </style>
