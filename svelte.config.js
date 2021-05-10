@@ -1,5 +1,3 @@
-// import node from '@sveltejs/adapter-node';
-import vercel from '@sveltejs/adapter-vercel';
 import sveltePreprocess from 'svelte-preprocess';
 
 export default {
@@ -9,7 +7,7 @@ export default {
 		// You can create optimized builds for different platforms by
 		// specifying a different adapter
 		// adapter: node(),
-		adapter: vercel(),
+		// adapter: vercel(),
 
 		// hydrate the <div id="svelte"> element in src/app.html
 		target: '#svelte'

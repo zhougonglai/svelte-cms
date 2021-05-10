@@ -1,14 +1,24 @@
 <script>
 	import BouncingLoader from '$lib/BouncingLoader.svelte';
-	import Activity from './_Active.svelte';
+	import { onMount } from 'svelte';
+	import Activity from './_active.svelte';
+
+	let activitys = [];
+	let loading = true;
 
 	async function getActivitys() {
+		loading = true;
 		const { data } = await fetch(
 			`${import.meta.env.VITE_SVELTEKIT_API_PATH}/api/activity`
 		).then(res => res.json());
 
-		return data;
+		return data.list;
 	}
+
+	onMount(async () => {
+		activitys = await getActivitys();
+		loading = false;
+	});
 </script>
 
 <svelte:head>
@@ -21,15 +31,15 @@
 </svelte:head>
 
 <section class="mx-auto py-4">
-	<ul class="activitys grid grid-flow-row-dense gap-y-4">
-		{#await getActivitys()}
-			<BouncingLoader />
-		{:then { list }}
-			{#each list as activity}
+	{#if loading}
+		<BouncingLoader />
+	{:else}
+		<ul class="activitys grid grid-flow-row-dense gap-y-4">
+			{#each activitys as activity}
 				<Activity {activity} />
 			{/each}
-		{/await}
-	</ul>
+		</ul>
+	{/if}
 </section>
 
 <style lang="scss">

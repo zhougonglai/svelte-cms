@@ -1,7 +1,11 @@
 <script>
 	import BouncingLoader from '$lib/BouncingLoader.svelte';
+	import { onMount } from 'svelte';
+	let newses = [],
+		loading = true;
 
 	async function getNews() {
+		loading = true;
 		const { data } = await fetch(
 			`${
 				import.meta.env.VITE_SVELTEKIT_API_PATH
@@ -9,13 +13,15 @@
 				class_type: 2,
 				support_type: 1
 			})}`
-		).then(res => {
-			console.log(res);
-			return res.json();
-		});
+		).then(res => res.json());
 
-		return data;
+		return data.list;
 	}
+
+	onMount(async () => {
+		newses = await getNews();
+		loading = false;
+	});
 </script>
 
 <svelte:head>
@@ -29,10 +35,10 @@
 
 <section class="mx-auto py-4">
 	<ul class="activitys flex flex-col">
-		{#await getNews()}
+		{#if loading}
 			<BouncingLoader />
-		{:then { list }}
-			{#each list as news}
+		{:else}
+			{#each newses as news}
 				<li class="activity cursor-pointer hover:shadow rounded p-4">
 					<a
 						sveltekit:prefetch
@@ -63,7 +69,7 @@
 					</a>
 				</li>
 			{/each}
-		{/await}
+		{/if}
 	</ul>
 </section>
 
